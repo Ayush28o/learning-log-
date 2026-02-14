@@ -1,2 +1,5 @@
-streamlit
+
+
+flask
 supabase
+gunicorn
