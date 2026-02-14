@@ -29,36 +29,64 @@ st.markdown(f"""
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
+
+/* APP BACKGROUND */
+[data-testid="stAppViewContainer"] {{
+    background: {gradient};
+    overflow: hidden;
+}}
+
+/* FADE PAGE IN */
+[data-testid="stAppViewContainer"] > .main {{
+    animation: pageFade 1.2s ease-in-out;
+}}
+
+@keyframes pageFade {{
+    from {{opacity: 0; transform: translateY(10px);}}
+    to {{opacity: 1; transform: translateY(0);}}
+}}
+
+/* FONT */
 html, body, [class*="css"] {{
     font-family: 'Playfair Display', serif;
 }}
 
-body {{
-    background: {gradient};
-}}
-
+/* TITLE */
 .title {{
     text-align:center;
-    font-size:42px;
+    font-size:48px;
     font-weight:700;
-    margin-top:30px;
+    margin-top:40px;
+    color:#2b2d42;
     animation: fadeIn 2s ease-in;
 }}
 
 .subtitle {{
     text-align:center;
-    color:#6d6d6d;
-    margin-bottom:30px;
-    animation: fadeIn 3s ease-in;
+    color:#6d6875;
+    margin-bottom:40px;
+    animation: fadeIn 2.5s ease-in;
 }}
 
+/* CARDS */
 .card {{
     background:white;
-    padding:20px;
-    border-radius:18px;
-    margin-bottom:20px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.05);
+    padding:24px;
+    border-radius:22px;
+    margin-bottom:25px;
+    box-shadow:0 12px 35px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: slideUp 0.8s ease-in;
+}}
+
+.card:hover {{
+    transform: translateY(-6px);
+    box-shadow:0 20px 50px rgba(0,0,0,0.12);
+}}
+
+@keyframes slideUp {{
+    from {{opacity:0; transform:translateY(40px);}}
+    to {{opacity:1; transform:translateY(0);}}
 }}
 
 @keyframes fadeIn {{
@@ -66,10 +94,36 @@ body {{
     to {{opacity:1;}}
 }}
 
-@keyframes slideUp {{
-    from {{opacity:0; transform:translateY(20px);}}
-    to {{opacity:1; transform:translateY(0);}}
+/* BUTTON ANIMATION */
+button {{
+    border-radius:14px !important;
+    transition: all 0.25s ease !important;
 }}
+
+button:hover {{
+    transform: scale(1.05);
+}}
+
+</style>
+""", unsafe_allow_html=True)
+
+
+#----------graphics-----
+
+st.markdown("""
+<div class="floating-bg"></div>
+
+<style>
+.floating-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15) 0px, transparent 200px),
+                      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.12) 0px, transparent 200px);
+    z-index: -1;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -88,6 +142,19 @@ if not st.session_state.auth:
         else:
             st.error("Incorrect password")
     st.stop()
+# -------- AUDIO BLOCK --------
+ # -------- SOFT BACKGROUND INSTRUMENTAL --------
+st.markdown("""
+<audio id="bgm" autoplay loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_3a9e4e2b75.mp3" type="audio/mp3">
+</audio>
+
+<script>
+var audio = document.getElementById("bgm");
+audio.volume = 0.25;
+</script>
+""", unsafe_allow_html=True)
+
 
 # -------- MAIN PAGE --------
 nickname = "Divya"
@@ -96,6 +163,23 @@ st.markdown(f'<div class="title">Welcome, {nickname}</div>', unsafe_allow_html=T
 st.markdown('<div class="subtitle">This space grows slowly, like us.</div>', unsafe_allow_html=True)
 
 st.divider()
+
+# -------- SPOTIFY SONG SECTION --------
+if "show_song" not in st.session_state:
+    st.session_state.show_song = False
+
+if st.button("🎧 Play Our Song"):
+    st.session_state.show_song = True
+
+if st.session_state.show_song:
+    st.markdown("""
+    <div style="
+        margin-top:20px;
+        animation: fadeIn 1s ease-in;
+    ">
+       <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0FDlo7Rz1GQXjYz3y0UxPb?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    """, unsafe_allow_html=True)
 
 # -------- ADD ENTRY --------
 with st.expander("Add Reflection"):
@@ -127,3 +211,4 @@ for entry in entries:
         <b>Better:</b><br>{entry['better']}
     </div>
     """, unsafe_allow_html=True)
+
