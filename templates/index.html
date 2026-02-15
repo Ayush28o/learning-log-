@@ -1,35 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-<link rel="stylesheet" href="/static/style.css">
-<script src="/static/script.js"></script>
-</head>
 <body>
 
-<div class="background-animation"></div>
-
-<div class="container fade-in">
+<div class="container">
 
 <h1>Welcome, Divya</h1>
 <p class="subtitle">This space grows slowly, like us.</p>
 
 <button onclick="playMusic()">🎵 Start Background Music</button>
 
-<div id="music"></div>
-
-<h2>Add Reflection</h2>
+<h2 style="margin-top:40px;">Add Reflection</h2>
 
 <form method="POST" action="/add">
 <textarea name="understood" placeholder="What I understood about you"></textarea>
 <textarea name="learned" placeholder="What I learned about myself"></textarea>
 <textarea name="better" placeholder="What I’ll do better"></textarea>
-<button>Save</button>
+<button type="submit">Save Entry</button>
 </form>
 
-<h2>Our Journey</h2>
+<h2 style="margin-top:40px;">Our Journey</h2>
 
 {% for entry in entries %}
-<div class="card slide-up">
+<div class="card">
 <strong>{{ entry.date }}</strong>
 <p><b>Understood:</b> {{ entry.understood }}</p>
 <p><b>Learned:</b> {{ entry.learned }}</p>
@@ -39,5 +29,6 @@
 
 </div>
 
+<script src="/static/script.js"></script>
+
 </body>
-</html>
